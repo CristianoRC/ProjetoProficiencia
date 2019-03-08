@@ -9,7 +9,7 @@
   <meta name="author" content="Cristiano Raffi Cunha">
   <title>Locadora - LPW</title>
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="shortcut icon" type="image/png" href="/images/car.png"/>
+  <link rel="shortcut iindex.1con" type="image/png" href="/images/car.png"/>
 </head>
 
 <body>
@@ -21,10 +21,8 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home
-              <span class="sr-only">(current)</span>
-            </a>
+          <li class="nav-item">
+            <a class="nav-link" href="index.php">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="clientes.php">Clientes</a>
@@ -32,8 +30,9 @@
           <li class="nav-item">
             <a class="nav-link" href="veiculos.php">Veículos</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="locacoes.php">Locações</a>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Locações</a>
+            <span class="sr-only">(current)</span>
           </li>
         </ul>
       </div>
@@ -43,8 +42,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 text-center">
-        <h1 class="mt-5">Locação de veículos</h1>
-        <img src="/images/car.png" alt="Carro" width="400vw" class="img-fluid">
+        <h3 class="mt-5">Locações</h3>
       </div>
     </div>
   </div>
