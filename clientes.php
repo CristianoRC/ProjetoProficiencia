@@ -13,7 +13,11 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
   <!-- Requires PHP -->
-  <?php include 'tools/tabela.php';?>
+  <?php 
+    include 'tools/tabela.php';
+    include 'tools/notificacao.php';
+    include 'db/crudCliente.php'
+  ?>
 </head>
 
 <body>
@@ -47,18 +51,29 @@
     <div class="row">
       <div class="col-lg-12 text-center">
         <h3 class="mt-5 mb-3">Clientes</h3>
-        <a href="criarCliente.php" class="btn btn-sm btn-outline-success mb-3"><i class="fas fa-user-plus mr-3"></i>Adicionar novo cliente</a>
+        <a href="criarCliente.php" class="btn btn-sm btn-outline-success mt-2 mb-5"><i class="fas fa-user-plus mr-3"></i>Adicionar novo cliente</a>
         <?php
-            $headers = array(
-                'id' => '#',
-                'nome' => 'Nome',
-                'sobrenome' => 'Sobrenome',
-                'idade' => 'idade',
-                'acoes' => '',
-            );
+            $queryResult = listarUsuario();
+            $conteudo = array();
 
-            $conteudo = array(array(1, 'A', 'B', 'C', ''), array(2, 'A', 'B', 'C', ''), array(3, 'A', 'B', 'C', ''));
+            foreach ($queryResult as $key => $value) {
+              $opcoes ="<a class='btn btn-md' href='/crudCliente.php?method=delete&cpf=$value[cpf]' style='background-color:transparent;'>
+                          <i class=\"fas fa-trash-alt text-danger\"></i>
+                        </a>";
+                $value['opcoes'] = $opcoes;
+                array_push($conteudo,$value);
+            }
+
+            $headers = array(
+                'CPF',
+                'Nome',
+                'E-mail',
+                'Telefone',
+                '',
+            );
             printarTabela($headers, $conteudo);
+            if(isset($_REQUEST['sucesso']))
+              printarAlerta('Usuário criado com sucesso!','success');
         ?>
       </div>
     </div>
@@ -76,4 +91,3 @@
 </body>
 
 </html>
-

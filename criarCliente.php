@@ -109,10 +109,7 @@
     <div class="row mt-2">
       <div class="col-lg-5 offset-lg-5">
         <?
-        //'true' e 'false' -> a linguagem sempre traz os valores como string
-        if(isset($_REQUEST['sucesso']) && $_REQUEST['sucesso'] == 'true')
-          printarAlerta('Usuário criado com sucesso!','success');
-        else if(isset($_REQUEST['sucesso']) && $_REQUEST['sucesso'] == 'false')
+          if(isset($_REQUEST['sucesso']) && $_REQUEST['sucesso'] == 'false')
           printarAlerta('Ocorreu um erro ao criar o usuário!','danger');
         ?> 
       </div>
