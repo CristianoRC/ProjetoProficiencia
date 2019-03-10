@@ -9,7 +9,7 @@
   <meta name="author" content="Cristiano Raffi Cunha">
   <title>Locadora - LPW</title>
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="shortcut iindex.1con" type="image/png" href="/images/car.png"/>
+  <link rel="shortcut icon" type="image/png" href="/images/car.png"/>
 </head>
 
 <body>

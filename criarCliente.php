@@ -10,6 +10,7 @@
   <title>Locadora - LPW</title>
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link rel="shortcut icon" type="image/png" href="/images/car.png"/>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </head>
 
 <body>
@@ -25,11 +26,11 @@
             <a class="nav-link" href="index.php">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="clientes.php">Clientes</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Veículos</a>
+            <a class="nav-link active" href="clientes.php">Clientes</a>
             <span class="sr-only">(current)</span>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="veiculos.php">Veículos</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="locacoes.php">Locações</a>
@@ -41,8 +42,11 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-lg-12 text-center">
-        <h3 class="mt-5">Veiculos</h3>
+      <div class="col-lg-8 offset-lg-2 text-center">
+        <h3 class="mt-5 mb-3"></i> Novo Cliente</h3>
+        <form method="post">
+          <button type="submit" class="btn btn-sm btn-outline-success float-right"><i class="fas fa-user-plus mr-1"></i> Criar novo usuário</button>
+        </form>
       </div>
     </div>
   </div>
@@ -59,3 +63,4 @@
 </body>
 
 </html>
+

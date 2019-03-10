@@ -9,7 +9,11 @@
   <meta name="author" content="Cristiano Raffi Cunha">
   <title>Locadora - LPW</title>
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="shortcut iindex.1con" type="image/png" href="/images/car.png"/>
+  <link rel="shortcut icon" type="image/png" href="/images/car.png"/>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+  <!-- Requires PHP -->
+  <?php include 'tabela.php';?>
 </head>
 
 <body>
@@ -42,7 +46,20 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 text-center">
-        <h3 class="mt-5">Clientes</h3>
+        <h3 class="mt-5 mb-3">Clientes</h3>
+        <a href="criarCliente.php" class="btn btn-sm btn-outline-success mb-3"><i class="fas fa-user-plus mr-3"></i>Adicionar novo cliente</a>
+        <?php
+            $headers = array(
+                'id' => '#',
+                'nome' => 'Nome',
+                'sobrenome' => 'Sobrenome',
+                'idade' => 'idade',
+                'acoes' => '',
+            );
+
+            $conteudo = array(array(1, 'A', 'B', 'C', ''), array(2, 'A', 'B', 'C', ''), array(3, 'A', 'B', 'C', ''));
+            printarTabela($headers, $conteudo);
+        ?>
       </div>
     </div>
   </div>
@@ -59,3 +76,4 @@
 </body>
 
 </html>
+
