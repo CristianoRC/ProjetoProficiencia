@@ -5,6 +5,14 @@ if (isset($_REQUEST)) {
     if ($_REQUEST['method'] == 'post') {
         cadastrar();
     }
+    if ($_REQUEST['method'] == 'delete') {
+        if (isset($_REQUEST['cpf'])) {
+            deletar($_REQUEST['cpf']);
+        } else {
+            header("Location: http://localhost/clientes.php?sucesso=false&mensagem=Não foi possível deletar o usuário!", true, 301);
+            exit();
+        }
+    }
 }
 
 function cadastrar()
@@ -35,7 +43,7 @@ function cadastrar()
         $response = pg_insert($conexao, 'cliente', $dados);
 
         if ($response) {
-            header("Location: http://localhost/clientes.php?sucesso=true", true, 301);
+            header("Location: http://localhost/clientes.php?sucesso=true&mensagem=Usuário criado com sucesso!", true, 301);
             exit();
         } else {
             //TODO: Ele não está caindo aqui, apenas da uma mensagem na tela;
@@ -56,7 +64,19 @@ function listarUsuario()
     if ($response) {
         return pg_fetch_all($response);
     } else {
-        return array();
+        return null;
     }
 
+}
+
+function deletar($cpf)
+{
+    $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
+    $cliente = array('cpf'=>$cpf);
+
+    $response = pg_delete($conexao, 'cliente', $cliente);
+    if ($response) {
+        header("Location: http://localhost/clientes.php?sucesso=true&mensagem=Usuário deletado com sucesso!", true, 301);
+        exit();
+    }
 }

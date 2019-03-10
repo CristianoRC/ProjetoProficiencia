@@ -13,13 +13,16 @@ function printarTabela($headers, $conteudo)
     $inicioCorpo = "<tbody>";
 
     $corpo = "";
-    foreach ($conteudo as $value) {
-        $corpo .= "<tr>";
-        foreach ($value as $informacoes) {
-            $corpo .= "<td>$informacoes</td>";
+    if ($conteudo != null) {
+        foreach ($conteudo as $value) {
+            $corpo .= "<tr>";
+            foreach ($value as $informacoes) {
+                $corpo .= "<td>$informacoes</td>";
+            }
+            $corpo .= "<tr>";
         }
-        $corpo .= "<tr>";
     }
+
     $fimCorpo = "</tbody>";
     $fimTabela = "</table>";
     echo ("

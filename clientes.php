@@ -33,7 +33,7 @@
             <a class="nav-link" href="index.php">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="#">Clientes</a>
+            <a class="nav-link active" href="clientes.php">Clientes</a>
             <span class="sr-only">(current)</span>
           </li>
           <li class="nav-item">
@@ -54,26 +54,41 @@
         <a href="criarCliente.php" class="btn btn-sm btn-outline-success mt-2 mb-5"><i class="fas fa-user-plus mr-3"></i>Adicionar novo cliente</a>
         <?php
             $queryResult = listarUsuario();
-            $conteudo = array();
-
-            foreach ($queryResult as $key => $value) {
-              $opcoes ="<a class='btn btn-md' href='/crudCliente.php?method=delete&cpf=$value[cpf]' style='background-color:transparent;'>
-                          <i class=\"fas fa-trash-alt text-danger\"></i>
-                        </a>";
-                $value['opcoes'] = $opcoes;
-                array_push($conteudo,$value);
-            }
 
             $headers = array(
-                'CPF',
-                'Nome',
-                'E-mail',
-                'Telefone',
-                '',
+              'CPF',
+              'Nome',
+              'E-mail',
+              'Telefone',
+              '',
             );
-            printarTabela($headers, $conteudo);
+            if($queryResult != null)
+            {
+              $conteudo = array();
+              foreach ($queryResult as $key => $value) {
+                $opcoes ="<a class='btn btn-md' href='db/crudCliente.php?method=delete&cpf=$value[cpf]' style='background-color:transparent;'>
+                            <i class=\"fas fa-trash-alt text-danger\"></i>
+                          </a>";
+                  $value['opcoes'] = $opcoes;
+                  array_push($conteudo,$value);
+              }
+  
+              printarTabela($headers, $conteudo);
+            }
+            else
+            {
+              printarTabela($headers, null);
+            }
+
+            //alertas
             if(isset($_REQUEST['sucesso']))
-              printarAlerta('Usuário criado com sucesso!','success');
+            {
+              if($_REQUEST['sucesso'] == 'true')
+              printarAlerta($_REQUEST['mensagem'],'success');
+              else
+              printarAlerta($_REQUEST['mensagem'],'danger');
+            }
+              
         ?>
       </div>
     </div>
