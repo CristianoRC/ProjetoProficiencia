@@ -11,21 +11,6 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   
   <?php require("tools/notificacao.php"); ?>
-  <?php
-    //TODO: Retornar esses calores do arquivo de Crud
-    $nome="";
-    $cpf="";
-    $email="";
-    $telefone="";
-
-    if(isset($_REQUEST['valoresValidos']))
-    {
-      $nome = $_REQUEST['valoresValidos']['nome'];
-      $cpf = $_REQUEST['valoresValidos']['cpf'];
-      $email = $_REQUEST['valoresValidos']['email'];
-      $telefone = $_REQUEST['valoresValidos']['telefone'];
-    }
-  ?>
 </head>
 
 <body>
@@ -41,11 +26,11 @@
             <a class="nav-link" href="index.php">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="clientes.php">Clientes</a>
-            <span class="sr-only">(current)</span>
+            <a class="nav-link" href="clientes.php">Clientes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="veiculos.php">Veículos</a>
+            <a class="nav-link active" href="veiculos.php">Veículos</a>
+            <span class="sr-only">(current)</span>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="locacoes.php">Locações</a>
@@ -57,27 +42,57 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 offset-lg-2">
-        <?php require "db/crudCliente.php"; ?>
-        <h3 class="mt-5 mb-3"></i> Novo Cliente</h3>
-        <form action="db/crudCliente.php?method=post" method="post">
+        <?php require "db/crudVeiculo.php"; ?>
+        <div class="row">
+          <div class="col"><h3 class="mt-2 mb-3"></i> Novo Veículo</h3></div>
+          <div class="col"><img width="100" id="img-marca" src="https://static.kbb.com.br/Themes/GPS/Images/pt_BR/Brands/AUDI.png" class="rounded float-right" alt="Logo da marca"></div>
+        </div>
+        <form action="db/crudVeiculo.php?method=post" method="post">
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="InputNome">Nome</label>
-            <input value="<? echo $nome?>" type="text" id="InputNome" class="form-control col-sm-10" placeholder="Nome Sobrenome" name="nome">
+            <label class="col-sm-2 col-form-label" for="InputPlaca">Placa</label>
+            <input type="text" id="InputPlaca" class="form-control col-sm-10" placeholder="ABC-0000" name="placa">
           </div>
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="InputCpf">CPF</label>
-            <input value="<? echo $cpf?>" type="text" id="InputCpf" class="form-control col-sm-10" placeholder="000.000.000-00" name="cpf">
+            <label class="col-sm-2 col-form-label" for="InputMarca">Marca</label>
+            <select onchange="mudarMarca()" id="selectMarca" class="form-control col-sm-10" id="InputMarca" name="marca">
+              <option>Audi</option>
+              <option>BMW</option>
+              <option>Chevrolet</option>
+              <option>Citroen</option>
+              <option>Fiat</option>
+              <option>Ford</option>
+              <option>Honda</option>
+              <option>Hyundai</option>
+              <option>Jeep</option>
+              <option>Mercedes-Benz</option>
+              <option>Mitsubishi</option>
+              <option>Nissan</option>
+              <option>Peugeot</option>
+              <option>Renault</option>
+              <option>Peugeot</option>
+              <option>Volkswagen</option>
+            </select>
           </div>
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="InputEmail">Email</label>
-            <input value="<? echo $email?>" type="email" id="InputEmail" class="form-control col-sm-10" aria-describedby="emailHelp" placeholder="user@email.com" name="email">
+            <label class="col-sm-2 col-form-label" for="InputModelo">Modelo</label>
+            <input type="text" id="InputModelo" class="form-control col-sm-10" placeholder="Ex. A3" name="modelo">
           </div>
           <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="InputPhone">Telefone</label>
-            <input value="<? echo $telefone?>" type="tel" id="InputPhone" class="form-control col-sm-10" placeholder="(00) 00000-0000" name="telefone">
+            <label class="col-sm-2 col-form-label" for="InputCor">Cor</label>
+            <select class="form-control col-sm-10" id="InputCor" name="cor">
+              <option>Branco</option>
+              <option>Preto</option>
+              <option>Prata</option>
+              <option>Vermelho</option>
+              <option>Azul</option>
+            </select>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="InputDiaria">Diária(R$)</label>
+            <input type="number" id="InputDiaria" class="form-control col-sm-10" placeholder="R$ 250" name="diaria">
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-sm btn-outline-success float-right"><i class="fas fa-user-plus mr-1"></i> Criar novo usuário</button>
+            <button type="submit" class="btn btn-sm btn-outline-success float-right"><i class="fas fa-car mr-1"></i> Criar novo veículo</button>
           </div>
           <div class="form-group row ml-3">
             <?php
@@ -110,7 +125,7 @@
       <div class="col-lg-5 offset-lg-5">
         <?
           if(isset($_REQUEST['sucesso']) && $_REQUEST['sucesso'] == 'false')
-          printarAlerta('Ocorreu um erro ao criar o usuário!','danger');
+          printarAlerta('Ocorreu um erro ao criar o veículo!','danger');
         ?> 
       </div>
     </div> 
@@ -124,6 +139,16 @@
 </footer>
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script>
+      function mudarMarca()
+      {
+        let urlPadrao = "https://static.kbb.com.br/Themes/GPS/Images/pt_BR/Brands/@marca.png"         
+        let img = document.getElementById("img-marca");
+        let marca = document.getElementById("selectMarca");
+        let novaUrl = urlPadrao.replace("@marca", marca.value.toUpperCase());
+        img.src= novaUrl;
+      }
+  </script>
 </body>
 
 </html>

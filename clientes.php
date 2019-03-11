@@ -62,6 +62,7 @@
               'Telefone',
               '',
             );
+            
             if($queryResult != null)
             {
               $conteudo = array();
