@@ -10,6 +10,14 @@
   <title>Locadora - LPW</title>
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link rel="shortcut icon" type="image/png" href="/images/car.png"/>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+  <!-- Requires PHP -->
+  <?php 
+    include 'tools/tabela.php';
+    include 'tools/notificacao.php';
+    include 'db/crudLocacoes.php'
+  ?>
 </head>
 
 <body>
@@ -31,7 +39,7 @@
             <a class="nav-link" href="veiculos.php">Veículos</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">Locações</a>
+            <a class="nav-link" href="locacoes.php">Locações</a>
             <span class="sr-only">(current)</span>
           </li>
         </ul>
@@ -43,6 +51,47 @@
     <div class="row">
       <div class="col-lg-12 text-center">
         <h3 class="mt-5">Locações</h3>
+        <a href="criarLocacao.php" class="btn btn-sm btn-outline-success mt-2 mb-5"><i class="fas fas fa-exchange-alt mr-3"></i>Adicionar nova locação</a>
+        <?php
+            $queryResult = listarLocacoes();
+
+            $headers = array(
+              '#',
+              'Veiculo',
+              'Cliente',
+              'Entrega',
+              'Devolução',
+              'Devolver'
+            );
+            
+            if($queryResult != null)
+            {
+              //TODO: Valdiar se já foi devolvido para esconder o icone
+              $conteudo = array();
+              foreach ($queryResult as $key => $value) {
+                $opcoes ="<a class='btn btn-md' href='db/crudVeiculo.php?method=put&placa=$value[veiculo]&status=t' style='background-color:transparent;'>
+                <i class=\"fas fa-undo-alt text-info\"></i></a>";
+                $value['opcoes'] = $opcoes;
+                array_push($conteudo,$value);
+              }
+  
+              printarTabela($headers, $conteudo);
+            }
+            else
+            {
+              printarTabela($headers, null);
+            }
+
+            //alertas
+            if(isset($_REQUEST['sucesso']))
+            {
+              if($_REQUEST['sucesso'] == 'true')
+              printarAlerta($_REQUEST['mensagem'],'success');
+              else
+              printarAlerta($_REQUEST['mensagem'],'danger');
+            }
+              
+        ?>
       </div>
     </div>
   </div>

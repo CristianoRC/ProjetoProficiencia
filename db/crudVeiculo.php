@@ -3,19 +3,31 @@ require "database.php";
 
 if (isset($_REQUEST)) {
     if ($_REQUEST['method'] == 'post') {
-        cadastrar();
-    }
-    if ($_REQUEST['method'] == 'delete') {
+        cadastrarVeiculo();
+    } else if ($_REQUEST['method'] == 'delete') {
         if (isset($_REQUEST['placa'])) {
-            deletar($_REQUEST['placa']);
+            deletarVeiculo($_REQUEST['placa']);
         } else {
             header("Location: http://localhost/clientes.php?sucesso=false&mensagem=Não foi possível deletar o veículo!", true, 301);
             exit();
         }
+    } else if ($_REQUEST['method'] == 'put') {
+        atualizarDisponibilidade($_REQUEST['placa'], $_REQUEST['status'], true);
     }
 }
 
-function cadastrar()
+function atualizarDisponibilidade($placa, $status, $retornar)
+{
+    $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
+    pg_update($conexao, 'veiculo', array('disponivel' => $status), array('placa' => $placa));
+
+    if ($retornar == 1) {
+        header("Location: http://localhost/locacoes.php?sucesso=true&mensagem=Veiculo $placa, já está disponível!", true, 301);
+    }
+
+}
+
+function cadastrarVeiculo()
 {
     $erros = "";
 
@@ -31,7 +43,7 @@ function cadastrar()
         'modelo' => $modelo,
         'cor' => $cor,
         'diaria' => $diaria,
-        'disponivel' => true
+        'disponivel' => true,
     );
 
     foreach ($dados as $key => $value) {
@@ -62,13 +74,14 @@ function listarVeiculos($status)
 {
     $sql = "select * from veiculo";
 
-    if($status === 'Indisponível')
+    if ($status === 'Indisponível') {
         $sql .= " where disponivel='f'";
-    else if($status === 'Disponível')
+    } else if ($status === 'Disponível') {
         $sql .= " where disponivel='t'";
+    }
 
     $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
-    $response = pg_query($conexao,$sql );
+    $response = pg_query($conexao, $sql);
 
     if ($response) {
         return pg_fetch_all($response);
@@ -77,7 +90,7 @@ function listarVeiculos($status)
     }
 }
 
-function deletar($placa)
+function deletarVeiculo($placa)
 {
     $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
     $veiculo = array('placa' => $placa);
