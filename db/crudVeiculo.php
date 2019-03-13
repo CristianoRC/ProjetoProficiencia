@@ -12,19 +12,18 @@ if (isset($_REQUEST)) {
             exit();
         }
     } else if ($_REQUEST['method'] == 'put') {
-        atualizarDisponibilidade($_REQUEST['placa'], $_REQUEST['status'], true);
+        atualizarDisponibilidade($_REQUEST['placa'], true);
     }
 }
 
-function atualizarDisponibilidade($placa, $status, $retornar)
+function atualizarDisponibilidade($placa, $retornar)
 {
     $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
-    pg_update($conexao, 'veiculo', array('disponivel' => $status), array('placa' => $placa));
+    pg_update($conexao, 'veiculo', array('disponivel' => 't'), array('placa' => $placa));
 
     if ($retornar == 1) {
         header("Location: http://localhost/locacoes.php?sucesso=true&mensagem=Veiculo $placa, já está disponível!", true, 301);
     }
-
 }
 
 function cadastrarVeiculo()

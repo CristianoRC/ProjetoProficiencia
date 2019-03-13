@@ -57,10 +57,10 @@
 
             $headers = array(
               '#',
-              'Veiculo',
               'Cliente',
-              'Entrega',
-              'Devolução',
+              'Veiculo',
+              'Início',
+              'Fim',
               'Devolver'
             );
             
@@ -69,7 +69,7 @@
               //TODO: Valdiar se já foi devolvido para esconder o icone
               $conteudo = array();
               foreach ($queryResult as $key => $value) {
-                $opcoes ="<a class='btn btn-md' href='db/crudVeiculo.php?method=put&placa=$value[veiculo]&status=t' style='background-color:transparent;'>
+                $opcoes ="<a class='btn btn-md' href='db/crudVeiculo.php?method=put&placa=$value[veiculo]' style='background-color:transparent;'>
                 <i class=\"fas fa-undo-alt text-info\"></i></a>";
                 $value['opcoes'] = $opcoes;
                 array_push($conteudo,$value);
