@@ -1,6 +1,4 @@
 <?php
-require "database.php";
-
 if (isset($_REQUEST)) {
     if ($_REQUEST['method'] == 'post') {
         cadastrarVeiculo();
@@ -52,7 +50,6 @@ function cadastrarVeiculo()
     }
 
     if ($erros == "") {
-        //TODO: Verificar como pegar o $conexao do arquivo database.php
         $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
         $response = pg_insert($conexao, 'veiculo', $dados);
 

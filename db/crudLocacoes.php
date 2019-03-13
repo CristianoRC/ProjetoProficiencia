@@ -1,6 +1,4 @@
 <?php
-require "database.php";
-
 if (isset($_REQUEST)) {
     if ($_REQUEST['method'] == 'post') {
         cadastrarLocacao();
