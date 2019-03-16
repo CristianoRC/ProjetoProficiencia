@@ -1,4 +1,5 @@
 <?php
+
 if (isset($_REQUEST)) {
     if ($_REQUEST['method'] == 'post') {
         cadastrarVeiculo();
@@ -41,6 +42,7 @@ function cadastrarVeiculo()
         'cor' => $cor,
         'diaria' => $diaria,
         'disponivel' => true,
+        'deletado' => false,
     );
 
     foreach ($dados as $key => $value) {
@@ -68,12 +70,14 @@ function cadastrarVeiculo()
 
 function listarVeiculos($status)
 {
-    $sql = "select * from veiculo";
+    $sql = "select placa, marca, modelo, cor, diaria, disponivel from veiculo";
 
     if ($status === 'Indisponível') {
-        $sql .= " where disponivel='f'";
+        $sql .= " where disponivel='f' AND deletado='f'";
     } else if ($status === 'Disponível') {
-        $sql .= " where disponivel='t'";
+        $sql .= " where disponivel='t' AND deletado='f'";
+    } else {
+        $sql .= " where deletado='f'";
     }
 
     $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
@@ -88,10 +92,10 @@ function listarVeiculos($status)
 
 function deletarVeiculo($placa)
 {
+    //TODO: Se o veículo estiver indisponível, ele não podera ser excluído
     $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
-    $veiculo = array('placa' => $placa);
+    $response = pg_update($conexao, 'veiculo', array('deletado' => 't'), array('placa' => $placa));
 
-    $response = pg_delete($conexao, 'veiculo', $veiculo);
     if ($response) {
         header("Location: http://localhost/veiculos.php?sucesso=true&mensagem=Veículo deletado com sucesso!", true, 301);
         exit();

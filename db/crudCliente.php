@@ -43,7 +43,6 @@ function cadastrar()
             header("Location: http://localhost/clientes.php?sucesso=true&mensagem=Usuário criado com sucesso!", true, 301);
             exit();
         } else {
-            //TODO: Ele não está caindo aqui, apenas da uma mensagem na tela;
             header("Location: http://localhost/criarCliente.php?_reponse=$response", true, 301);
             exit();
         }
@@ -56,7 +55,7 @@ function cadastrar()
 function listarUsuario()
 {
     $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
-    $response = pg_query($conexao, "select * from cliente");
+    $response = pg_query($conexao, "select cpf, nome, email, telefone from cliente where deletado = false");
 
     if ($response) {
         return pg_fetch_all($response);
@@ -68,10 +67,10 @@ function listarUsuario()
 
 function deletar($cpf)
 {
+    //Se o cliente estiver com algum veículo alugado, ele não podera ser excluído
     $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
-    $cliente = array('cpf' => $cpf);
+    $response = pg_update($conexao, 'cliente', array('deletado' => 't'), array('cpf' => $cpf));
 
-    $response = pg_delete($conexao, 'cliente', $cliente);
     if ($response) {
         header("Location: http://localhost/clientes.php?sucesso=true&mensagem=Usuário deletado com sucesso!", true, 301);
         exit();
