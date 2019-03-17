@@ -1,4 +1,5 @@
 <?php
+//TODO: Resolver problemas de cache
 
 if (isset($_REQUEST)) {
     if ($_REQUEST['method'] == 'post') {
@@ -92,12 +93,35 @@ function listarVeiculos($status)
 
 function deletarVeiculo($placa)
 {
-    //TODO: Se o veículo estiver indisponível, ele não podera ser excluído
+    if (veiculoEstaDisponivel($placa) == 1) {
+        $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
+        $response = pg_update($conexao, 'veiculo', array('deletado' => 't'), array('placa' => $placa));
+
+        if ($response) {
+            header("Location: http://localhost/veiculos.php?sucesso=true&mensagem=Veículo deletado com sucesso!", true, 301);
+            exit();
+        }
+    } else {
+        header("Location: http://localhost/veiculos.php?sucesso=false&mensagem=Veículo não pode ser deletado, está alugado.", true, 301);
+        exit();
+    }
+
+}
+
+function veiculoEstaDisponivel($placa)
+{
     $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
-    $response = pg_update($conexao, 'veiculo', array('deletado' => 't'), array('placa' => $placa));
+    $response = pg_query($conexao, "select disponivel from veiculo where placa='$placa'");
 
     if ($response) {
-        header("Location: http://localhost/veiculos.php?sucesso=true&mensagem=Veículo deletado com sucesso!", true, 301);
-        exit();
+        $valorString = pg_fetch_row($response);
+
+        if ($valorString[0] == 'f') {
+            return false;
+        }
+        return true;
+
+    } else {
+        return false;
     }
 }
