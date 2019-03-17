@@ -27,6 +27,10 @@ function cadastrarLocacao()
         }
     }
 
+    if ($dataInicial > $dataFinal) {
+        $erros .= "_datas=Data inicial não pode ser menor que a final";
+    }
+
     if ($erros == "") {
         $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
         $response = pg_insert($conexao, 'locacao', $dados);

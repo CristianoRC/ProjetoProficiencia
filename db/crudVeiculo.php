@@ -52,6 +52,11 @@ function cadastrarVeiculo()
         }
     }
 
+    preg_match("/[A-Z]{3}[-][0-9]{4}/", $placa, $mathes);
+    if (count($mathes) == 0) {
+        $erros .= "_placaFormato=placa com formtato inválido&";
+    }
+
     if ($erros == "") {
         $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
         $response = pg_insert($conexao, 'veiculo', $dados);

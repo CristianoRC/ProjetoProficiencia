@@ -35,6 +35,16 @@ function cadastrar()
         }
     }
 
+    preg_match("/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/", $placa, $mathesCPF);
+    if (count($mathesCPF) == 0) {
+        $erros .= "_cpfFormato=CPF com formato Invalido&";
+    }
+
+    preg_match("/^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/", $telefone, $mathesTelefone);
+    if (count($mathesTelefone) == 0) {
+        $erros .= "_telefoneFormato=Telefone com formato Invalido&";
+    }
+
     if ($erros == "") {
         $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
         $response = pg_insert($conexao, 'cliente', $dados);
