@@ -47,7 +47,8 @@ function cadastrarVeiculo()
     );
 
     foreach ($dados as $key => $value) {
-        if (!isset($value) || trim($value) == '') {
+        $erros .= "$key=$value&";
+        if (!isset($value) || trim($value) == '' && $key != 'deletado') {
             $erros .= "_$key=$key Invalido(a)&";
         }
     }

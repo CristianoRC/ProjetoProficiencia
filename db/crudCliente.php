@@ -30,6 +30,7 @@ function cadastrar()
     );
 
     foreach ($dados as $key => $value) {
+        $erros .= "$key=$value&";
         if (!isset($value) || trim($value) == '') {
             $erros .= "_$key=$key Invalido&";
         }

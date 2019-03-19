@@ -12,18 +12,17 @@
   
   <?php require("tools/notificacao.php"); ?>
   <?php
-    //TODO: Retornar esses calores do arquivo de Crud
     $nome="";
     $cpf="";
     $email="";
     $telefone="";
 
-    if(isset($_REQUEST['valoresValidos']))
+    if(isset($_REQUEST))
     {
-      $nome = $_REQUEST['valoresValidos']['nome'];
-      $cpf = $_REQUEST['valoresValidos']['cpf'];
-      $email = $_REQUEST['valoresValidos']['email'];
-      $telefone = $_REQUEST['valoresValidos']['telefone'];
+      $nome = $_REQUEST['nome'];
+      $cpf = $_REQUEST['cpf'];
+      $email = $_REQUEST['email'];
+      $telefone = $_REQUEST['telefone'];
     }
   ?>
 </head>

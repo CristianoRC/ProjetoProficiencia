@@ -11,6 +11,22 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   
   <?php require("tools/notificacao.php"); ?>
+  <?php
+    $placa="";
+    $marca="";
+    $modelo="";
+    $diaria="";
+    $cor="";
+
+    if(isset($_REQUEST))
+    {
+      $placa = $_REQUEST['placa'];
+      $marca = $_REQUEST['marca'];
+      $modelo = $_REQUEST['modelo'];
+      $diaria = $_REQUEST['diaria'];
+      $cor = $_REQUEST['cor'];
+    }
+  ?>
 </head>
 
 <body>
@@ -50,11 +66,11 @@
         <form action="db/crudVeiculo.php?method=post" method="post">
           <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="InputPlaca">Placa</label>
-            <input type="text" id="InputPlaca" class="form-control col-sm-10" placeholder="ABC-0000" name="placa">
+            <input value="<?echo $placa?>" type="text" id="InputPlaca" class="form-control col-sm-10" placeholder="ABC-0000" name="placa">
           </div>
           <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="InputMarca">Marca</label>
-            <select onchange="mudarMarca()" id="selectMarca" class="form-control col-sm-10" id="InputMarca" name="marca">
+            <select value="<?echo $marca?>" onchange="mudarMarca()" id="selectMarca" class="form-control col-sm-10" id="InputMarca" name="marca">
               <option>Audi</option>
               <option>BMW</option>
               <option>Chevrolet</option>
@@ -75,11 +91,11 @@
           </div>
           <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="InputModelo">Modelo</label>
-            <input type="text" id="InputModelo" class="form-control col-sm-10" placeholder="Ex. A3" name="modelo">
+            <input value="<?echo $modelo?>" type="text" id="InputModelo" class="form-control col-sm-10" placeholder="Ex. A3" name="modelo">
           </div>
           <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="InputCor">Cor</label>
-            <select class="form-control col-sm-10" id="InputCor" name="cor">
+            <select value="<?echo $cor?>" class="form-control col-sm-10" id="InputCor" name="cor">
               <option>Branco</option>
               <option>Preto</option>
               <option>Prata</option>
@@ -89,7 +105,7 @@
           </div>
           <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="InputDiaria">Diária(R$)</label>
-            <input type="number" id="InputDiaria" class="form-control col-sm-10" placeholder="R$ 250" name="diaria">
+            <input value="<?echo $diaria?>" type="number" id="InputDiaria" class="form-control col-sm-10" placeholder="R$ 250" name="diaria">
           </div>
           <div class="form-group">
             <button type="submit" class="btn btn-sm btn-outline-success float-right"><i class="fas fa-car mr-1"></i> Criar novo veículo</button>
