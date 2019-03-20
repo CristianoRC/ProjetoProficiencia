@@ -27,7 +27,8 @@ CREATE TABLE public.cliente (
     cpf character varying(11) NOT NULL,
     nome character varying(60) NOT NULL,
     email character varying(50) NOT NULL,
-    telefone character varying(20)
+    telefone character varying(20),
+    deletado boolean NOT NULL
 );
 
 
@@ -42,7 +43,8 @@ CREATE TABLE public.locacao (
     cliente character varying(20) NOT NULL,
     veiculo character varying(8) NOT NULL,
     data_inicial date NOT NULL,
-    data_final date NOT NULL
+    data_final date NOT NULL,
+    devolvido boolean NOT NULL
 );
 
 
@@ -80,7 +82,8 @@ CREATE TABLE public.veiculo (
     modelo character varying(60) NOT NULL,
     cor character varying(25) NOT NULL,
     diaria numeric(5,2) NOT NULL,
-    disponivel boolean NOT NULL
+    disponivel boolean NOT NULL,
+    deletado boolean NOT NULL
 );
 
 
@@ -97,8 +100,9 @@ ALTER TABLE ONLY public.locacao ALTER COLUMN id SET DEFAULT nextval('public.loca
 -- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.cliente (cpf, nome, email, telefone) FROM stdin;
-03049120002	Cristiano	contato@cristianoprogramador.com	53 984319169
+COPY public.cliente (cpf, nome, email, telefone, deletado) FROM stdin;
+9809809	ipoip	teste@test	456456	t
+03049120002	Cristiano	contato@cristianoprogramador.com	53 984319169	f
 \.
 
 
@@ -106,7 +110,19 @@ COPY public.cliente (cpf, nome, email, telefone) FROM stdin;
 -- Data for Name: locacao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.locacao (id, cliente, veiculo, data_inicial, data_final) FROM stdin;
+COPY public.locacao (id, cliente, veiculo, data_inicial, data_final, devolvido) FROM stdin;
+7	9809809	FDG-9856	2019-03-13	2019-03-15	t
+8	03049120002	ABC-0123	2019-03-16	2019-03-23	t
+10	03049120002	ABC-0123	2019-03-16	2019-03-21	t
+11	03049120002	ABC-0123	2019-03-20	2019-04-20	t
+14	03049120002	ABC-0123	2019-03-20	2019-03-23	t
+9	03049120002	XYZ-9876	2019-03-13	2019-03-16	t
+12	03049120002	XYZ-9876	2019-03-20	2019-03-23	t
+13	03049120002	XYZ-9876	2019-03-20	2019-03-23	t
+15	03049120002	XYZ-9876	2019-03-20	2019-03-23	t
+16	03049120002	ABC-0123	2019-03-20	2019-03-22	t
+17	03049120002	XYZ-9876	2019-03-20	2019-03-22	t
+18	03049120002	ABC-0123	2019-03-22	2019-03-24	t
 \.
 
 
@@ -114,9 +130,11 @@ COPY public.locacao (id, cliente, veiculo, data_inicial, data_final) FROM stdin;
 -- Data for Name: veiculo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.veiculo (placa, marca, modelo, cor, diaria, disponivel) FROM stdin;
-ABC-0123	Audi	A4	Branco	320.00	t
-XYZ-9876	Volkswagen	Gol G7	Vermelho	280.00	t
+COPY public.veiculo (placa, marca, modelo, cor, diaria, disponivel, deletado) FROM stdin;
+FDG-9856	Citroen	dfg	Prata	455.00	t	t
+VCD-9856	Audi	A4	Branco	56.00	t	t
+XYZ-9876	Volkswagen	Gol G7	Vermelho	280.00	t	f
+ABC-0123	Audi	A4	Branco	320.00	t	f
 \.
 
 
@@ -124,7 +142,7 @@ XYZ-9876	Volkswagen	Gol G7	Vermelho	280.00	t
 -- Name: locacao_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.locacao_id_seq', 6, true);
+SELECT pg_catalog.setval('public.locacao_id_seq', 18, true);
 
 
 --
@@ -213,4 +231,3 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.veiculo TO locadora;
 --
 -- PostgreSQL database dump complete
 --
-
