@@ -27,6 +27,7 @@ function cadastrar()
         'nome' => $nome,
         'email' => $email,
         'telefone' => $telefone,
+        'deletado' => 'f'
     );
 
     foreach ($dados as $key => $value) {
