@@ -7,7 +7,7 @@ if (isset($_REQUEST)) {
 
 function cadastrarLocacao()
 {
-    $erros = "";
+    $parametros = "";
 
     $cliente = $_REQUEST['cliente']; //CPF
     $veiculo = $_REQUEST['veiculo']; //Placa
@@ -19,19 +19,20 @@ function cadastrarLocacao()
         'veiculo' => $veiculo,
         'data_inicial' => $dataInicial,
         'data_final' => $dataFinal,
+        'devolvido' => 'f',
     );
 
     foreach ($dados as $key => $value) {
         if (!isset($value) || trim($value) == '') {
-            $erros .= "_$key=$key Invalido&";
+            $parametros .= "_$key=$key Invalido&";
         }
     }
 
     if ($dataInicial > $dataFinal) {
-        $erros .= "_datas=Data inicial não pode ser menor que a final";
+        $parametros .= "_datas=Data inicial não pode ser menor que a final";
     }
 
-    if ($erros == "") {
+    if ($parametros == "") {
         $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
         $response = pg_insert($conexao, 'locacao', $dados);
 
@@ -44,7 +45,7 @@ function cadastrarLocacao()
             exit();
         }
     } else {
-        header("Location: http://localhost/criarLocacao.php?$erros", true, 301);
+        header("Location: http://localhost/criarLocacao.php?$parametros", true, 301);
         exit();
     }
 }
@@ -52,7 +53,7 @@ function cadastrarLocacao()
 function listarLocacoes()
 {
     $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
-    $response = pg_query($conexao, "select * from locacao");
+    $response = pg_query($conexao, "select * from locacao order by id desc");
 
     if ($response) {
         return pg_fetch_all($response);

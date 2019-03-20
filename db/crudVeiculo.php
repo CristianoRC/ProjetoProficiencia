@@ -12,15 +12,17 @@ if (isset($_REQUEST)) {
             exit();
         }
     } else if ($_REQUEST['method'] == 'put') {
-        atualizarDisponibilidade($_REQUEST['placa'], true);
+        atualizarDisponibilidade($_REQUEST['placa'], $_REQUEST['locacao'], true);
     }
 }
 
-function atualizarDisponibilidade($placa, $retornar)
+function atualizarDisponibilidade($placa, $id, $retornar)
 {
     $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
     pg_update($conexao, 'veiculo', array('disponivel' => 't'), array('placa' => $placa));
-
+    
+    pg_update($conexao, 'locacao', array('devolvido' => 't'), array('id' => $id));
+    
     if ($retornar == 1) {
         header("Location: http://localhost/locacoes.php?sucesso=true&mensagem=Veiculo $placa, já está disponível!", true, 301);
     }
@@ -28,7 +30,7 @@ function atualizarDisponibilidade($placa, $retornar)
 
 function cadastrarVeiculo()
 {
-    $erros = "";
+    $parametros = "";
 
     $placa = $_REQUEST['placa'];
     $marca = $_REQUEST['marca'];
@@ -47,18 +49,23 @@ function cadastrarVeiculo()
     );
 
     foreach ($dados as $key => $value) {
-        $erros .= "$key=$value&";
         if (!isset($value) || trim($value) == '' && $key != 'deletado') {
-            $erros .= "_$key=$key Invalido(a)&";
+            $parametros .= "_$key=$key Invalido(a)&";
         }
     }
 
     preg_match("/[A-Z]{3}[-][0-9]{4}/", $placa, $mathes);
     if (count($mathes) == 0) {
-        $erros .= "_placaFormato=placa com formtato inválido&";
+        $parametros .= "_placaFormato=placa com formtato inválido&";
     }
 
-    if ($erros == "") {
+    if ($parametros != "") {
+        foreach ($dados as $key => $value) {
+            $parametros .= "$key=$value&";
+        }
+    }
+
+    if ($parametros == "") {
         $conexao = pg_connect("host=172.17.0.2 port=5432 dbname=locadora user=locadora password=lpw@2019");
         $response = pg_insert($conexao, 'veiculo', $dados);
 
@@ -70,7 +77,7 @@ function cadastrarVeiculo()
             exit();
         }
     } else {
-        header("Location: http://localhost/criarVeiculo.php?$erros", true, 301);
+        header("Location: http://localhost/criarVeiculo.php?$parametros", true, 301);
         exit();
     }
 }

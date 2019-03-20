@@ -66,12 +66,21 @@
             
             if($queryResult != null)
             {
-              //TODO: Valdiar se já foi devolvido para esconder o icone
               $conteudo = array();
               foreach ($queryResult as $key => $value) {
-                $opcoes ="<a class='btn btn-md' href='db/crudVeiculo.php?method=put&placa=$value[veiculo]' style='background-color:transparent;'>
-                <i class=\"fas fa-undo-alt text-info\"></i></a>";
-                $value['opcoes'] = $opcoes;
+                if($value['devolvido'] === 'f')
+                {
+                  $opcoes ="<a class='btn btn-md' href='db/crudVeiculo.php?method=put&placa=$value[veiculo]&locacao=$value[id]' style='background-color:transparent;'>
+                  <i class=\"fas fa-undo-alt text-info\"></i></a>";
+                  $value['opcoes'] = $opcoes;
+                }
+                else{
+                  $opcoes ="<a class='btn btn-md' style='background-color:transparent;'>
+                  <i class=\"fas fa-check text-info\"></i></a>";
+                  $value['opcoes'] = $opcoes;
+                }
+                unset($value['devolvido']);
+
                 array_push($conteudo,$value);
               }
   
